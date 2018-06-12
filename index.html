@@ -108,22 +108,7 @@
         <p>
           <button onclick="location.href='create.html'">开始创建</button>
         </p>
-          <!--<p>-->
-            <!--<input id="agreedata"> agree</input>-->
-          <!--</p>-->
-          <!--<p>-->
-            <!--<input id="contentdata"> content</input>-->
-          <!--</p>-->
-          <!--<p>-->
-              <!--<button type="button" class="create-contract" name="create-contract">create</button>-->
-          <!--</p>-->
-        <!--
-        <div class="col-lg-8 mx-auto">
-          <h2>Download Grayscale</h2>
-          <p>You can download Grayscale for free on the preview page at Start Bootstrap.</p>
-          <a href="http://startbootstrap.com/template-overviews/grayscale/" class="btn btn-default btn-lg">Visit Download Page</a>
-        </div>
-         -->
+
       </div>
     </section>
 
@@ -147,66 +132,8 @@
         <div>
           <div id="table"></div>
         </div>
-        <script class="get-contract">
-            let data = [{"id":2,"create":"Wang","agree":"Li","createtime":1,"agreetime":"1","content":"139****9517","status":1},
-                {"id":2,"create":"Wang","agree":"Li","createtime":1,"agreetime":"1","content":"139****9517","status":0}];
-            $(function () {
-                var grid=BCGrid.create("#table",{
-                    columns: [
-                        // {id: 'id', name: 'id', display: 'ID', align: 'center', hide: true},
-                        {name: 'id',display:'合同编号', render: function(item, index){
-                                return item.id.toString().link("https://www.baidu.com")
-                            }},
-                        {name: 'create',display:'甲方'},
-                        {name: 'agree',display:'乙方'},
-                        {name: 'createtime',display:'合同创建时间'},
-                        {name: 'agreetime',display:'合同生效时间'},
-                        {name: 'content',display:'合同内容'},
-                        {name: 'status',display:'合同状态', render: function (item, index) {
-                                if (item.status == 0) {
-                                    return "未签约";
-                                }
-                                else if (item.status == 1) {
-                                    return "已签约";
-                                }
-                            }},
-                    ],
-                    dataSource:'local',
-                    localData:data
-                });
-
-            });
-        </script>
-        <!--
-        <div class="row">
-          <div class="col-lg-8 mx-auto">
-            <h2>Contact Start Bootstrap</h2>
-            <p>Feel free to leave us a comment on the
-              <a href="http://startbootstrap.com/template-overviews/grayscale/">Grayscale template overview page</a>
-              on Start Bootstrap to give some feedback about this theme!</p>
-            <ul class="list-inline banner-social-buttons">
-              <li class="list-inline-item">
-                <a href="https://twitter.com/SBootstrap" class="btn btn-default btn-lg">
-                  <i class="fa fa-twitter fa-fw"></i>
-                  <span class="network-name">Twitter</span>
-                </a>
-              </li>
-              <li class="list-inline-item">
-                <a href="https://github.com/BlackrockDigital/startbootstrap" class="btn btn-default btn-lg">
-                  <i class="fa fa-github fa-fw"></i>
-                  <span class="network-name">Github</span>
-                </a>
-              </li>
-              <li class="list-inline-item">
-                <a href="https://plus.google.com/+Startbootstrap/posts" class="btn btn-default btn-lg">
-                  <i class="fa fa-google-plus fa-fw"></i>
-                  <span class="network-name">Google+</span>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        -->
+        
+      
       </div>
     </section>
 
@@ -314,37 +241,44 @@
         nebPay.simulateCall(to,value,callsaveFunction,callsaveArgs,{
           listener:function(resp){
             console.log(resp.result.substring(7));
-            let data = resp.result.substring(7);
-            let contracts = data.split("_value");
-            console.log(contracts.length)
-            let len = contracts.length;
-            for(let i = 0;i < len; i ++){
-              console.log("for-------------")
-              let parts = contracts[i].split(",");
-              let id = parts[0].split(":")[1];
-              console.log(parts.length)
-              console.log(id.toString());
-              let create = parts[1].split(":")[1];
-              console.log(create);
-              let agree = parts[2].split(":")[1];
-              console.log(agree);
-              let createtime = parts[3].split(":")[1];
-              console.log(createtime);
-              let agreetime = parts[4].split(":")[1];
-              console.log(agreetime);
-              let content = parts[5].split(":")[1];
-              console.log(content);
-              let status = parts[6].split(":")[1];
-              console.log(status);
-              $("#mycontract").append("<p>conId:"+id.toString()+"</p>");
-              $("#mycontract").append("<p>create:"+create+"</p>");
-              $("#mycontract").append("<p>agree:"+agree+"</p>");
-              $("#mycontract").append("<p>createtime:"+createtime+"</p>");
-              $("#mycontract").append("<p>agreetime:"+agreetime+"</p>");
-              $("#mycontract").append("<p>content:"+content+"</p>");
-              $("#mycontract").append("<p>status:"+status+"</p>");
-              $("#mycontract").append("<p>\n<p>");
+            let data = resp.result.substring(7,resp.result.length-1);
+            let contracts = data.split("_value:");
+            var alldata = []
+            for (let i = 0; i<contracts.length; i++){
+              console.log(contracts[i])
+              let tmp = JSON.parse("\""+contracts[i]+"\"")
+              console.log(tmp)
+              var res = JSON.parse(tmp)
+              console.log("res--------"+res.createtime)
+              alldata.push(res)
             }
+            $(function () {
+                var grid=BCGrid.create("#table",{
+                    columns: [
+                        // {id: 'id', name: 'id', display: 'ID', align: 'center', hide: true},
+                        {name: 'id',display:'合同编号', render: function(item, index){
+                                return item.key.toString().link("https://www.baidu.com")
+                            }},
+                        {name: 'create',display:'甲方'},
+                        {name: 'agree',display:'乙方'},
+                        //{name: 'createtime',display:'合同创建时间'},
+                        //{name: 'agreetime',display:'合同生效时间'},
+                        //{name: 'content',display:'合同内容'},
+                        {name: 'status',display:'合同状态', render: function (item, index) {
+                                if (item.status == 0) {
+                                    return "未签约";
+                                }
+                                else if (item.status == 1) {
+                                    return "已签约";
+                                }
+                            }},
+                    ],
+                    dataSource:'local',
+                    localData:alldata
+                });
+
+            });
+           
           }
         })
       }
@@ -368,9 +302,11 @@
       }
         
 
-      mycontractDisplay.addEventListener("click", getMyContract);
-      createcontractDisplay.addEventListener("click", createContract);
-      signcontractDisplay.addEventListener("click", signContract);
+      //mycontractDisplay.addEventListener("click", getMyContract);
+      //createcontractDisplay.addEventListener("click", createContract);
+      //signcontractDisplay.addEventListener("click", signContract);
+
+      getMyContract();
 
     </script>
   
