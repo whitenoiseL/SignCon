@@ -21,6 +21,12 @@
     <!-- Custom styles for this template -->
     <link href="css/grayscale.min.css" rel="stylesheet">
 
+    <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/font-awesome/4.6.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="dist/css/bc.grid-1.0.0.min.css"/>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="dist/bc.grid-1.0.0.min.js"></script>
+
   </head>
 
   <body id="page-top">
@@ -39,10 +45,10 @@
               <a class="nav-link js-scroll-trigger" href="#about">&nbsp关于&nbsp</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#download">&nbsp创建&nbsp</a>
+              <a class="nav-link js-scroll-trigger" href="create.html">&nbsp创建合同&nbsp</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#contact" name="my">&nbsp我的合同&nbsp</a>
+              <a class="nav-link js-scroll-trigger" href="profile.html" name="my">&nbsp我的合同&nbsp</a>
             </li>
           </ul>
         </div>
@@ -128,16 +134,49 @@
             <p>
               <h1>我的合同</h1>
             </p>
-            <p>
-              <button onclick="location.href='profile.html'">查看我的合同</button>
-            </p>
-            <p>
-              <button type="button" class="get-contract" name="get-contract">inquire</button>
-            </p>
-            <p>
-                <button type="button" class="sign-contract" name="sign-contract">sign</button>
-              </p>
+            <!--<p>-->
+              <!--<button onclick="location.href='profile.html'">查看我的合同</button>-->
+            <!--</p>-->
+            <!--<p>-->
+              <!--<button type="button" class="get-contract" name="get-contract">inquire</button>-->
+            <!--</p>-->
+            <!--<p>-->
+                <!--<button type="button" class="sign-contract" name="sign-contract">sign</button>-->
+              <!--</p>-->
           </div>
+        <div>
+          <div id="table"></div>
+        </div>
+        <script class="get-contract">
+            let data = [{"id":2,"create":"Wang","agree":"Li","createtime":1,"agreetime":"1","content":"139****9517","status":1},
+                {"id":2,"create":"Wang","agree":"Li","createtime":1,"agreetime":"1","content":"139****9517","status":0}];
+            $(function () {
+                var grid=BCGrid.create("#table",{
+                    columns: [
+                        // {id: 'id', name: 'id', display: 'ID', align: 'center', hide: true},
+                        {name: 'id',display:'合同编号', render: function(item, index){
+                                return item.id.toString().link("https://www.baidu.com")
+                            }},
+                        {name: 'create',display:'甲方'},
+                        {name: 'agree',display:'乙方'},
+                        {name: 'createtime',display:'合同创建时间'},
+                        {name: 'agreetime',display:'合同生效时间'},
+                        {name: 'content',display:'合同内容'},
+                        {name: 'status',display:'合同状态', render: function (item, index) {
+                                if (item.status == 0) {
+                                    return "未签约";
+                                }
+                                else if (item.status == 1) {
+                                    return "已签约";
+                                }
+                            }},
+                    ],
+                    dataSource:'local',
+                    localData:data
+                });
+
+            });
+        </script>
         <!--
         <div class="row">
           <div class="col-lg-8 mx-auto">
