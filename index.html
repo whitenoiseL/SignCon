@@ -238,27 +238,40 @@
         let callsaveFunction = "get";
         let callsaveArgs = "";
 
+
+
+        function link(id,status){
+            //由于是一个新的技术，你可以通过下面的代码检测你的浏览器是否支持
+            if (window.localStorage) {
+                //存储变量的值
+                localStorage.id = id.toString();
+                localStorage.status = status.toString();
+                location.href = 'detail.html';
+            } else {
+                alert("请更新浏览器至最新版本！");
+            }
+            // return id.toString().link('detail.html')
+        }
         nebPay.simulateCall(to,value,callsaveFunction,callsaveArgs,{
           listener:function(resp){
             console.log(resp.result.substring(7));
             let data = resp.result.substring(7,resp.result.length-1);
             let contracts = data.split("_value:");
-            var alldata = []
-            for (let i = 0; i<contracts.length; i++){
-              console.log(contracts[i])
-              let tmp = JSON.parse("\""+contracts[i]+"\"")
-              console.log(tmp)
-              var res = JSON.parse(tmp)
-              console.log("res--------"+res.createtime)
-              alldata.push(res)
-            }
+            var alldata = [{"id":1,"create":"Wang","agree":"Li","createtime":1,"agreetime":"1","content":"139****9517","status":1},
+                {"id":2,"create":"Zhang","agree":"Li","createtime":1,"agreetime":"1","content":"139****9517","status":0}]
+            // for (let i = 0; i<contracts.length; i++){
+            //   console.log(contracts[i])
+            //   let tmp = JSON.parse("\""+contracts[i]+"\"")
+            //   console.log(tmp)
+            //   var res = JSON.parse(tmp)
+            //   console.log("res--------"+res.createtime)
+            //   // alldata.push(res)
+            // }
             $(function () {
                 var grid=BCGrid.create("#table",{
                     columns: [
                         // {id: 'id', name: 'id', display: 'ID', align: 'center', hide: true},
-                        {name: 'id',display:'合同编号', render: function(item, index){
-                                return item.key.toString().link("https://www.baidu.com")
-                            }},
+                        {name: "id",display:'合同编号'},
                         {name: 'create',display:'甲方'},
                         {name: 'agree',display:'乙方'},
                         //{name: 'createtime',display:'合同创建时间'},
@@ -274,7 +287,10 @@
                             }},
                     ],
                     dataSource:'local',
-                    localData:alldata
+                    localData:alldata,
+                    onRowClick: function (rowIndex, rowData) { //行点击事件
+                        link(rowData.id,rowData.status);
+                    },
                 });
 
             });
