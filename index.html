@@ -118,6 +118,7 @@
           <div id = "mycontract"> 
             <p>
               <h1>我的合同</h1>
+              <p id="pdata"></p>
             </p>
             <!--<p>-->
               <!--<button onclick="location.href='profile.html'">查看我的合同</button>-->
@@ -172,7 +173,7 @@
       var myDate = new Date();
       var NebPay = require("nebpay");
       var nebPay = new NebPay();
-      var dappaddress = "n21XsxcfUFvWDQLi6Zp1qwuv2y58mn3ffxk";;;']'
+      var dappaddress = "n1qiWGxNxV6UidSwL9HxWrsNg9DyTkAVMKG";
 
       const mycontractDisplay = document.querySelector(".get-contract");
       const createcontractDisplay = document.querySelector(".create-contract");
@@ -235,7 +236,7 @@
         let to = dappaddress;
         let value = "0";
         //var time = myDate.toLocaleString();
-        let callsaveFunction = "get";
+        let callsaveFunction = "foreach";
         let callsaveArgs = "";
 
 
@@ -246,81 +247,72 @@
                 //存储变量的值
                 localStorage.id = id.toString();
                 localStorage.status = status.toString();
+                //localStorage.type = wallet.toString();
                 location.href = 'detail.html';
             } else {
                 alert("请更新浏览器至最新版本！");
             }
             // return id.toString().link('detail.html')
         }
-        nebPay.simulateCall(to,value,callsaveFunction,callsaveArgs,{
-          listener:function(resp){
-            console.log(resp.result.substring(7));
-            let data = resp.result.substring(7,resp.result.length-1);
-            let contracts = data.split("_value:");
-            var alldata = [{"id":1,"create":"Wang","agree":"Li","createtime":1,"agreetime":"1","content":"139****9517","status":1},
-                {"id":2,"create":"Zhang","agree":"Li","createtime":1,"agreetime":"1","content":"139****9517","status":0}]
-            // for (let i = 0; i<contracts.length; i++){
-            //   console.log(contracts[i])
-            //   let tmp = JSON.parse("\""+contracts[i]+"\"")
-            //   console.log(tmp)
-            //   var res = JSON.parse(tmp)
-            //   console.log("res--------"+res.createtime)
-            //   // alldata.push(res)
-            // }
-            $(function () {
-                var grid=BCGrid.create("#table",{
-                    columns: [
-                        // {id: 'id', name: 'id', display: 'ID', align: 'center', hide: true},
-                        {name: "id",display:'合同编号'},
-                        {name: 'create',display:'甲方'},
-                        {name: 'agree',display:'乙方'},
-                        //{name: 'createtime',display:'合同创建时间'},
-                        //{name: 'agreetime',display:'合同生效时间'},
-                        //{name: 'content',display:'合同内容'},
-                        {name: 'status',display:'合同状态', render: function (item, index) {
-                                if (item.status == 0) {
-                                    return "未签约";
-                                }
-                                else if (item.status == 1) {
-                                    return "已签约";
-                                }
-                            }},
-                    ],
-                    dataSource:'local',
-                    localData:alldata,
-                    onRowClick: function (rowIndex, rowData) { //行点击事件
-                        link(rowData.id,rowData.status);
-                    },
-                });
-
-            });
-           
-          }
-        })
-      }
-
-      // 查询所有合约;
-      //这个合约想了一下应该是没用了，没有必要查看所有的合同，因为不是自己相关的合同，其实不应该有权限查看，所有有上面个人查询的方法就勾，不过先留着吧
-      function getaAllContract () {
-        let to = dappaddress;
-        let value = "0";
-        //var time = myDate.toLocaleString();
-        let callsaveFunction = "foreach";
-        let callsaveArgs = "";
 
         nebPay.simulateCall(to,value,callsaveFunction,callsaveArgs,{
           listener:function(resp){
-            console.log(resp.result);
-            let data = JSON.parse(resp.result);
-            console.log(data)
+            if(resp.result=="\"\""){
+              console.log("~~~~~");
+              $('#pdata').text("你还没有合同，去创建你的第一个合同吧");
+            }else{
+              console.log("hello");
+              console.log(resp.result);
+              console.log("hello");
+              //console.log(resp.result.substring(7,resp.result.length-1));
+              let data = resp.result.substring(1,resp.result.length-1);
+              //let contracts = data.split("_value:");
+              let contracts = data.split("-");
+              let alldata = [];
+              //var alldata = [{"id":1,"create":"Wang","agree":"Li","createtime":1,"agreetime":"1","content":"139****9517","status":1},
+              //   {"id":2,"create":"Zhang","agree":"Li","createtime":1,"agreetime":"1","content":"139****9517","status":0}]
+
+              for (let i = 0; i<contracts.length; i++){
+                console.log(contracts[i])
+                let tmp = JSON.parse("\""+contracts[i]+"\"")
+                console.log(tmp)
+                var res = JSON.parse(tmp)
+                console.log("res--------"+res.createtime)
+                alldata.push(res)
+              }
+
+
+              $(function () {
+                  var grid=BCGrid.create("#table",{
+                      columns: [
+                          // {id: 'id', name: 'id', display: 'ID', align: 'center', hide: true},
+                          //{name: "key",display:'合同编号'},
+                          {name: 'create',display:'甲方'},
+                          {name: 'agree',display:'乙方'},
+                          //{name: 'createtime',display:'合同创建时间'},
+                          //{name: 'agreetime',display:'合同生效时间'},
+                          //{name: 'content',display:'合同内容'},
+                          {name: 'status',display:'合同状态', render: function (item, index) {
+                                  if (item.status == 0) {
+                                      return "未签约";
+                                  }
+                                  else if (item.status == 1) {
+                                      return "已签约";
+                                  }
+                              }},
+                      ],
+                      dataSource:'local',
+                      localData:alldata,
+                      onRowClick: function (rowIndex, rowData) { //行点击事件
+                          link(rowData.key,rowData.status);
+                      },
+                  });
+
+              });
+            }
           }
         })
       }
-        
-
-      //mycontractDisplay.addEventListener("click", getMyContract);
-      //createcontractDisplay.addEventListener("click", createContract);
-      //signcontractDisplay.addEventListener("click", signContract);
 
       getMyContract();
 
