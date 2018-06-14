@@ -49,49 +49,6 @@
     </div>
 </nav>
 
-<!--&lt;!&ndash; Intro Header &ndash;&gt;-->
-<!--<header class="masthead">-->
-    <!--<div class="intro-body">-->
-        <!--<div class="container">-->
-            <!--<div class="row">-->
-                <!--<div class="col-lg-8 mx-auto">-->
-                    <!--<h1 class="brand-heading">星云 SignCon</h1>-->
-                    <!--<p class="intro-text">签约，从未如此简单！-->
-                        <!--<br>Make contract signing easy again!</p>-->
-                    <!--<a href="#about" class="btn btn-circle js-scroll-trigger">-->
-                        <!--<i class="fa fa-angle-double-down animated"></i>-->
-                    <!--</a>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</header>-->
-
-<!--&lt;!&ndash; About Section &ndash;&gt;-->
-<!--<section id="about" class="content-section text-center">-->
-    <!--<div class="container">-->
-        <!--<p>-->
-        <!--<h1>关于星云&nbspSingCon</h1>-->
-        <!--</p>-->
-
-
-        <!--<div class="row">-->
-            <!--<div class="col-lg-8 mx-auto">-->
-                <!--&lt;!&ndash;<h2>About SignCon</h2>&ndash;&gt;-->
-                <!--<p>星云 SignCon是一个基于星云链的合同签约平台。</p>-->
-                <!--<p>合同数据链上存储，保障了数据公开透明及不可修改等特点。</p>-->
-                <!--<p>用户通过SignCon平台进行合同撰写及签约，在家即可完成签约。</p>-->
-                <!--<p> 更方便、更简单、更安全！</p>-->
-                <!--&lt;!&ndash;<p>This theme features stock photos by&ndash;&gt;-->
-                <!--&lt;!&ndash;<a href="http://gratisography.com/">Gratisography</a>&ndash;&gt;-->
-                <!--&lt;!&ndash;along with a custom Google Maps skin courtesy of&ndash;&gt;-->
-                <!--&lt;!&ndash;<a href="http://snazzymaps.com/">Snazzy Maps</a>.</p>&ndash;&gt;-->
-                <!--&lt;!&ndash;<p>Grayscale includes full HTML, CSS, and custom JavaScript files along with SASS and LESS files for easy customization!</p>&ndash;&gt;-->
-            <!--</div>-->
-        <!--</div>-->
-
-    <!--</div>-->
-<!--</section>-->
 
 <!-- Create Section -->
 <section id="download" class="download-section content-section text-center">
@@ -138,11 +95,7 @@
 <!-- Plugin JavaScript -->
 <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
-<!-- Google Maps API Key - Use your own API key to enable the map feature. More information on the Google Maps API can be found at https://developers.google.com/maps/ -->
-<!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRngKslUGJTlibkQ3FkfTxj3Xss1UlZDA&sensor=false"></script>-->
-
-<!-- Custom scripts for this template -->
-<!--<script src="js/grayscale.min.js"></script>-->
+<!
 
 
 
@@ -156,7 +109,7 @@
     var myDate = new Date();
     var NebPay = require("nebpay");
     var nebPay = new NebPay();
-    var dappaddress = "n1qiWGxNxV6UidSwL9HxWrsNg9DyTkAVMKG";
+    var dappaddress = "n1rJWE44yJRX9F4CSt3iarhdeaChf7gCZJv";
 
     const mycontractDisplay = document.querySelector(".get-contract");
     const createcontractDisplay = document.querySelector(".create-contract");
@@ -168,7 +121,15 @@
 
         let agree = $("#agreedata").val();
         console.log(agree);
-        let content = $("#contentdata").val();
+        let content = $("#contentdata").val().split("\n");
+        let data = "";
+        for(let i = 0; i < content.length;i++){
+            if(data == ""){
+                data += content[i];
+            }else{
+                data += "#wocaowobuxinzheyanghainengyourenchongfuyaozhenshidehuawojiuguile#" + content[i];
+            }
+        }
         console.log(content);
         let time = myDate.toLocaleString();
         console.log(time);
@@ -177,7 +138,7 @@
         let value = "0";
         //var time = myDate.toLocaleString();
         let callFunction = "set";
-        let callArgs = "[" + "\"" + agree.toString() + "\"" + "," + "\"" + content.toString() + "\"" +  "," + "\"" + time.toString() + "\""+"]";
+        let callArgs = "[" + "\"" + agree.toString() + "\"" + "," + "\"" + data.toString() + "\"" +  "," + "\"" + time.toString() + "\""+"]";
         console.log(callArgs);
 
         nebPay.call(to,value,callFunction,callArgs,{
@@ -186,14 +147,12 @@
 
             }
         })
-        location.href = 'index.html#contact';
+        alert("待区块链交易完成后，点击右上角我的合同查看已创建合同。")
 
     }
 
     // 签署合约;
-    //这个合约还没有调，这个等你把个人合同的显示和按钮弄好之后我再弄把
-    //这样明天就不一定能弄完了，弄不完就下周，尽量做好点拿奖
-    
+
 
     // mycontractDisplay.addEventListener("click", getMyContract);
     createcontractDisplay.addEventListener("click", createContract);

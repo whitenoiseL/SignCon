@@ -86,14 +86,10 @@
             <!--<h2>About SignCon</h2>-->
             <p>星云 SignCon是一个基于星云链的合同签约平台。</p>
             <p>合同数据链上存储，保障了数据公开透明及不可修改等特点。</p>
-            <p>用户通过SignCon平台进行合同撰写及签约，在家即可完成签约。</p>
-                 <p> 更方便、更简单、更安全！</p>
-            <!--<p>This theme features stock photos by-->
-              <!--<a href="http://gratisography.com/">Gratisography</a>-->
-              <!--along with a custom Google Maps skin courtesy of-->
-              <!--<a href="http://snazzymaps.com/">Snazzy Maps</a>.</p>-->
-            <!--<p>Grayscale includes full HTML, CSS, and custom JavaScript files along with SASS and LESS files for easy customization!</p>-->
-          </div>
+            <p>更方便、更简单、更安全！</p>
+                 <p> 使用指南：1.创建合同：甲方点击下方开始创建按钮进入创建页面，输入合同内容及乙方钱包地址，点击"确认创建并签署合同"按钮，合同就已经创建并默认甲方已签署。</p>
+              <p>2.乙方签署合同：点击我的合同查看已有合同，点击相应合同进入合同详情。乙方未签约合同可点击"同意并签署合同"进行签约，已签约合同只可查看合同具体内容，不可重复签约。</p>
+            </div>
         </div>
 
       </div>
@@ -120,15 +116,7 @@
               <h1>我的合同</h1>
               <p id="pdata"></p>
             </p>
-            <!--<p>-->
-              <!--<button onclick="location.href='profile.html'">查看我的合同</button>-->
-            <!--</p>-->
-            <!--<p>-->
-              <!--<button type="button" class="get-contract" name="get-contract">inquire</button>-->
-            <!--</p>-->
-            <!--<p>-->
-                <!--<button type="button" class="sign-contract" name="sign-contract">sign</button>-->
-              <!--</p>-->
+
           </div>
         <div>
           <div id="table"></div>
@@ -138,8 +126,7 @@
       </div>
     </section>
 
-    <!-- Map Section -->
-    <!--<div id="map"></div>-->
+
 
     <!-- Footer -->
     <footer>
@@ -173,7 +160,7 @@
       var myDate = new Date();
       var NebPay = require("nebpay");
       var nebPay = new NebPay();
-      var dappaddress = "n1qiWGxNxV6UidSwL9HxWrsNg9DyTkAVMKG";
+      var dappaddress = "n1rJWE44yJRX9F4CSt3iarhdeaChf7gCZJv";
 
       const mycontractDisplay = document.querySelector(".get-contract");
       const createcontractDisplay = document.querySelector(".create-contract");
@@ -314,7 +301,10 @@
         })
       }
 
-      getMyContract();
+      $(function(){
+          getMyContract();
+      })
+
 
     </script>
   
